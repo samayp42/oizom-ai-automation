@@ -1,11 +1,12 @@
 import streamlit as st
-from pdf2image import convert_from_path
 import tempfile, os, json, requests
 from datetime import datetime
 import google.generativeai as genai
 from dotenv import load_dotenv
 import re
 import json
+import pdfplumber
+
 
 
 
