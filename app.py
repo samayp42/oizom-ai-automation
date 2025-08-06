@@ -208,7 +208,8 @@ def load_images_from_bytes(pdf_bytes, dpi=150):
     
     try:
         # Use poppler_path if you have it configured, otherwise it uses system's PATH
-        images = convert_from_path(tmp_path, dpi=dpi)
+        with pdfplumber.open(tmp_path) as pdf:
+            text = "\n".join([page.extract_text() or "" for page in pdf.pages])
     finally:
         os.remove(tmp_path)
         
@@ -282,7 +283,7 @@ You are an expert in air-quality document parsing. Given a PO or quotation in im
 """
                 results = []
                 for img in images:
-                    res = model.generate_content([prompt, img])
+                    res = model.generate_content([prompt, text])
                     try:
                         clean = res.text.strip("```json").strip("```")
                     #print("cleaned json : ", clean)
